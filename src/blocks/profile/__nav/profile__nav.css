@@ -1,0 +1,11 @@
+.profile__nav {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+@media screen and (max-width: 767px) {
+  .profile__nav {
+    flex-direction: column;
+   }
+  }

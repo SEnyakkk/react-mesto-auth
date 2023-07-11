@@ -1,0 +1,60 @@
+/* общие стили */
+@import url(./vendor/normalize.css);
+@import url(./vendor/fonts/fonts.css);
+@import url(./blocks/page/page.css);
+@import url(./blocks/main/main.css);
+
+/* блок модалки */
+@import url(./blocks/popup/popup.css);
+@import url(./blocks/popup/__title/popup__title.css);
+@import url(./blocks/popup/__title/popup__title_type_delet.css);
+@import url(./blocks/popup/__container/popup__container.css);
+@import url(./blocks/popup/__close-button/popup__close-button.css);
+@import url(./blocks/popup/_opened/popup_opened.css);
+@import url(./blocks/popup/__figure-popup/popup__figure-popup.css);
+@import url(./blocks/popup/__figure-image/popup__figure-image.css);
+@import url(./blocks/popup/__figure-caption/popup__figure-caption.css);
+@import url(./blocks/popup/_zoom/popup_zoom.css);
+@import url(./blocks/popup/__invalid/popup__invalid.css);
+@import url(./blocks/popup/__invalid/_visible/popup__invalid_visible.css);
+/* блок формы */
+@import url(./blocks/form/form.css);
+@import url(./blocks/form/__data/form__data.css);
+@import url(./blocks/form/__data/_invalid/form__data_invalid.css);
+@import url(./blocks/form/__save/form__save.css);
+@import url(./blocks/form/__save/_disabled/form__save_disabled.css);
+
+/* блок header */
+@import url(./blocks/header/header.css);
+@import url(./blocks/header/__logo/header__logo.css);
+
+/* блок профиля */
+@import url(./blocks/profile/profile.css);
+@import url(./blocks/profile/__info/profile__info.css);
+@import url(./blocks/profile/__nav/profile__nav.css);
+@import url(./blocks/profile/__info-container/profile__info-container.css);
+@import url(./blocks/profile/__info-title/profile__info-title.css);
+@import url(./blocks/profile/__info-subtitle/profile__info-subtitle.css);
+@import url(./blocks/profile/__avatar/profile__avatar.css);
+@import url(./blocks/profile/__avatar-edit/profile__avatar-edit.css);
+@import url(./blocks/profile/__edit-button/profile__edit-button.css);
+@import url(./blocks/profile/__add-button/profile__add-button.css);
+
+/* блок сетки с изображениями */
+@import url(./blocks/elements/elements.css);
+@import url(./blocks/elements/__list/elements__list.css);
+
+/* блок елемента сетки */
+@import url(./blocks/place/__delete/place__delete.css);
+@import url(./blocks/place/place.css);
+@import url(./blocks/place/__container/place__container.css);
+@import url(./blocks/place/__image/place__image.css);
+@import url(./blocks/place/__text/place__text.css);
+@import url(./blocks/place/__group/place__group.css);
+@import url(./blocks/place/__like/place__like.css);
+@import url(./blocks/place/__like/_active/place__like_active.css);
+@import url(./blocks/place/__counter/place__counter.css);
+
+/* блок footer */
+@import url(./blocks/footer/footer.css);
+@import url(./blocks/footer/__copyright/footer__copyright.css);
