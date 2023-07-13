@@ -4,11 +4,15 @@ import { Footer } from "./Footer/Footer";
 import { PopupWithForm } from "./PopupWithForm/PopupWithForm";
 import { ImagePopup } from "./ImagePopup/ImagePopup";
 import { useEffect, useState } from "react";
-import CurrentUserContext from "../contexts/CurrentUserContext.js";
 import { api } from "../utils/api";
 import { EditProfilePopup } from "./EditProfilePopup/EditProfilePopup";
 import { EditAvatarPopup } from "./EditAvatarPopup/EditAvatarPopup";
 import { AddPlacePopup } from "./AddPlacePopup/AddPlacePopup";
+import { Navigate, Route, Routes } from 'react-router-dom';
+import CurrentUserContext from "../contexts/CurrentUserContext.js";
+import ProtectedRoute from "./ProtectedRoute";
+import { Login } from "./Login";
+import { Register } from "./Register";
 
 function App() {
 
@@ -22,8 +26,9 @@ function App() {
   const [cards, setCards] = useState([])
   const [isLoading, setIsLoading] = useState(false)
   const [deleteCard, setDeleteCard] = useState('')
+  const [userEmail, setUserEmail] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  // const [isLike, setIslike] = useState(false)
 
   function handleEditAvatarClick() {
     setIsEditAvatarPopupOpen(true)
@@ -76,16 +81,6 @@ function App() {
     }
   }
 
-  // лайки замечательно удаляются, но ставятся только после перезагрузки. 
-  // function handleCardLike(card) {
-  //   const isLiked = card.likes.some(i => i._id === currentUser._id);
-  //   !isLiked ? api.addlike(card._id) : api.removelike(card._id)
-  //     .then((newCard) => {
-  //       setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
-  //     })
-  //     .catch(console.error);
-  // }
-
   function closeAllPopups() {
     setIsEditAvatarPopupOpen(false)
     setIsEditProfilePopupOpen(false)
@@ -132,20 +127,48 @@ function App() {
       .catch(console.error);
   }, [])
 
+  function handleRegister(email, password) {
+   
+  }
+
+  function handleLogin(email, password) {
+    
+  }
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <>
-        <Header />
-        <Main
-          onEditAvatar={handleEditAvatarClick}
-          onEditProfile={handleEditProfileClick}
-          onAddPlace={handleAddPlaceClick}
-          onCardClick={handleCardClick}
-          cards={cards}
-          isLoading={isLoading}
-          onCardLike={handleCardLike}
-          onCardDelete={handleDeleteClick}
+        <Header
+          userEmail={userEmail}
+
         />
+
+        <Routes >
+          <ProtectedRoute exact path="/" component={Main}
+            onEditAvatar={handleEditAvatarClick}
+            onEditProfile={handleEditProfileClick}
+            onAddPlace={handleAddPlaceClick}
+            onCardClick={handleCardClick}
+            cards={cards}
+            isLoading={isLoading}
+            onCardLike={handleCardLike}
+            onCardDelete={handleDeleteClick}
+            isLoggedIn={isLoggedIn}
+          >
+          <Route path="/sign-up">
+            <Register onRegister={handleRegister} />
+          </Route>
+
+          <Route path="/sign-in">
+            <Login onLogin={handleLogin} />
+          </Route>
+          
+          <Route>
+            {isLoggedIn ? <Navigate to="/" /> : <Navigate to="/sign-in" />}
+          </Route>
+          </ProtectedRoute>
+        </Routes>
+
         <Footer />
 
         <EditProfilePopup
@@ -165,7 +188,6 @@ function App() {
           onClose={closeAllPopups}
           onAddCard={handleAddPlaceSubmit}
         />
-
 
         <PopupWithForm
           name={`delete`}
