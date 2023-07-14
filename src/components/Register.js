@@ -34,6 +34,7 @@ export function Register({ onRegister }) {
         type="email"
         placeholder="Email"
         onChange={handleEmailChange}
+        autoComplete="off"
         value={email}
       />
       <input
@@ -42,13 +43,14 @@ export function Register({ onRegister }) {
         type="password"
         placeholder="Пароль"
         onChange={handlePasswordChange}
+        autoComplete="off"
         value={password}
       />
       <button
         className="login__button"
         type="submit">Зарегистрироваться</button>
       <div className="login__signin">
-        <Link to="/sign-in" className="login__signin-link">
+        <Link to="/sign-in" className="login__signin-link link">
           Уже зарегистрированы? Войти
         </Link>
       </div>

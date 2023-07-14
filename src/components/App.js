@@ -8,11 +8,13 @@ import { api } from "../utils/api";
 import { EditProfilePopup } from "./EditProfilePopup/EditProfilePopup";
 import { EditAvatarPopup } from "./EditAvatarPopup/EditAvatarPopup";
 import { AddPlacePopup } from "./AddPlacePopup/AddPlacePopup";
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 import CurrentUserContext from "../contexts/CurrentUserContext.js";
 import ProtectedRoute from "./ProtectedRoute";
 import { Login } from "./Login";
 import { Register } from "./Register";
+import { authApi } from "../utils/authApi";
+import { InfoTooltip } from "./InfoTooltip";
 
 function App() {
 
@@ -28,6 +30,10 @@ function App() {
   const [deleteCard, setDeleteCard] = useState('')
   const [userEmail, setUserEmail] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isInfoTooltipOpen, setIsInfoTooltipOpen] = useState(false);
+  const [isInfoTolltipSuccess, setIsInfoTolltipSuccess] = useState(false);
+  const navigate = useNavigate();
+
 
 
   function handleEditAvatarClick() {
@@ -87,6 +93,7 @@ function App() {
     setIsAddPlacePopupOpen(false)
     setIsImagePopupOpen(false)
     setIsDeletePopupOpen(false)
+    setIsInfoTooltipOpen(false);
   }
 
   function handleUpdateUser(data) {
@@ -128,11 +135,35 @@ function App() {
   }, [])
 
   function handleRegister(email, password) {
-   
+    authApi.registerUser(email, password)
+      .then((res) => {
+        if (res) {
+          setIsInfoTolltipSuccess(true);
+          navigate(`/sing-in`);
+        }
+      })
+      .catch((err) => {
+        setIsInfoTolltipSuccess(false);
+        console.log(err);
+      })
+      .finally(() => setIsInfoTooltipOpen(true));
   }
 
   function handleLogin(email, password) {
-    
+    authApi.loginUser(email, password)
+      .then((res) => {
+        if (res.token) {
+          setUserEmail(email);
+          setIsLoggedIn(true);
+          localStorage.setItem("jwt", res.token);
+          navigate('/', { replace: true });
+        }
+      })
+      .catch((err) => {
+        setIsInfoTolltipSuccess(false);
+        setIsInfoTooltipOpen(true);
+        console.log(err);
+      });
   }
 
   return (
@@ -143,8 +174,9 @@ function App() {
 
         />
 
-        <Routes >
-          <ProtectedRoute exact path="/" component={Main}
+        <Routes>
+          <Route path="/" element={<ProtectedRoute
+            element={Main}
             onEditAvatar={handleEditAvatarClick}
             onEditProfile={handleEditProfileClick}
             onAddPlace={handleAddPlaceClick}
@@ -153,20 +185,16 @@ function App() {
             isLoading={isLoading}
             onCardLike={handleCardLike}
             onCardDelete={handleDeleteClick}
-            isLoggedIn={isLoggedIn}
-          >
-          <Route path="/sign-up">
-            <Register onRegister={handleRegister} />
-          </Route>
+            isLoggedIn={isLoggedIn} />}
+          />
 
-          <Route path="/sign-in">
-            <Login onLogin={handleLogin} />
-          </Route>
-          
-          <Route>
-            {isLoggedIn ? <Navigate to="/" /> : <Navigate to="/sign-in" />}
-          </Route>
-          </ProtectedRoute>
+          <Route path='/sign-up' element={<Register onRegister={handleRegister} />} />
+
+          <Route path='/sign-in' element={<Login onLogin={handleLogin} />} />
+
+
+          <Route path='*' element={isLoggedIn ? <Navigate to="/" /> : <Navigate to="/sign-in" />} />
+
         </Routes>
 
         <Footer />
@@ -202,6 +230,13 @@ function App() {
           card={selectedCard}
           isOpen={isImagePopupOpen}
           onClose={closeAllPopups}
+        />
+
+        <InfoTooltip
+          name={`success`}
+          onClose={closeAllPopups}
+          isOpen={isInfoTooltipOpen}
+          isSuccess={isInfoTolltipSuccess}
         />
       </>
     </CurrentUserContext.Provider>

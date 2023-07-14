@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 export function Login({ onLogin }) {
-  const [email, setEmail] = useState ("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   function handleEmailChange(evt) {
@@ -29,6 +29,7 @@ export function Login({ onLogin }) {
         type="email"
         placeholder="Email"
         onChange={handleEmailChange}
+        autoComplete="off"
         value={email}
       />
       <input
@@ -37,6 +38,7 @@ export function Login({ onLogin }) {
         type="password"
         placeholder="Пароль"
         onChange={handlePasswordChange}
+        autoComplete="off"
         value={password}
       />
       <button
