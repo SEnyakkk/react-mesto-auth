@@ -2,7 +2,7 @@ import logo from '../../images/mestologo.svg'
 import React from "react";
 import { Link, Route, Routes } from 'react-router-dom';
 
-export function Header({ email, onSignOut }) {
+export function Header({ email = '', onSignOut, isLoggedIn }) {
   return (
     <header className="header">
       <img
@@ -12,30 +12,26 @@ export function Header({ email, onSignOut }) {
       />
       <Routes>
         <Route path="/sign-in" element={
-          <Link to="sign-up" className="header__link">
+          <Link to="/sign-up" className="header__link ">
             Регистрация
           </Link>
-        }/>
+        } />
 
         <Route path="/sign-up" element={
-          <Link to="sign-in" className="header__link">
+          <Link to="/sign-in" className="header__link ">
             Войти
           </Link>
         } />
 
-
-
         <Route exact path="/" element={
           <div className="header__container">
             <p className="header__email">{email}</p>
-            <Link to="sign-in" className="" onClick={onSignOut}>
+            <Link to="/sign-in" className="header__link " onClick={onSignOut}>
               Выйти
             </Link>
           </div>
         } />
-
-
-    </Routes>
+      </Routes>
     </header >
   )
 }

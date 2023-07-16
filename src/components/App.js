@@ -34,7 +34,9 @@ function App() {
   const [isInfoTolltipSuccess, setIsInfoTolltipSuccess] = useState(false);
   const navigate = useNavigate();
 
-
+  useEffect(() => {
+    checkJwt();
+  },)
 
   function handleEditAvatarClick() {
     setIsEditAvatarPopupOpen(true)
@@ -139,7 +141,7 @@ function App() {
       .then((res) => {
         if (res) {
           setIsInfoTolltipSuccess(true);
-          navigate(`/sing-in`);
+          navigate(`/sing-in`, { replace: true });
         }
       })
       .catch((err) => {
@@ -151,11 +153,11 @@ function App() {
 
   function handleLogin(email, password) {
     authApi.loginUser(email, password)
-      .then((res) => {
-        if (res.token) {
+      .then((data) => {
+        if (data.jwt) {
           setUserEmail(email);
           setIsLoggedIn(true);
-          localStorage.setItem("jwt", res.token);
+          localStorage.setItem("jwt", data.jwt);
           navigate('/', { replace: true });
         }
       })
@@ -164,6 +166,24 @@ function App() {
         setIsInfoTooltipOpen(true);
         console.log(err);
       });
+  }
+
+  function checkJwt() {
+    const jwt = localStorage.getItem('jwt');
+    if (jwt) {
+      api.checkToken(jwt)
+        .then((res) => {
+          setIsLoggedIn(true);
+          userEmail(res.data.email);
+          navigate('/', {replace: true})
+        })
+        .catch(err => console.log(err));
+    }
+  }
+
+  function signOut() {
+    localStorage.removeItem('jwt');
+    navigate('/sign-in');
   }
 
   return (
@@ -185,19 +205,20 @@ function App() {
             isLoading={isLoading}
             onCardLike={handleCardLike}
             onCardDelete={handleDeleteClick}
-            isLoggedIn={isLoggedIn} />}
+            isLoggedIn={isLoggedIn} 
+            onSignOut={signOut}/>}
           />
 
           <Route path='/sign-up' element={<Register onRegister={handleRegister} />} />
 
           <Route path='/sign-in' element={<Login onLogin={handleLogin} />} />
 
-
-          <Route path='*' element={isLoggedIn ? <Navigate to="/" /> : <Navigate to="/sign-in" />} />
+          <Route path='*' element={isLoggedIn ? <Navigate to="/" replace /> : <Navigate to="/sign-in" replace/>} />
+        
 
         </Routes>
 
-        <Footer />
+
 
         <EditProfilePopup
           isOpen={isEditProfilePopupOpen}

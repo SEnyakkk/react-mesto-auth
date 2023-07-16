@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { Header } from "./Header/Header";
 
 export function Register({ onRegister }) {
   const [email, setEmail] = useState("");
@@ -15,45 +16,48 @@ export function Register({ onRegister }) {
 
   function handleSubmit(evt) {
     evt.preventDefault();
-    onRegister({
+    onRegister(
       email,
       password,
-    });
+    );
   }
   return (
-    <form
-      className="login__form"
-      name="register"
-      onSubmit={handleSubmit}
-      noValidate
-    >
-      <h2 className="login__title">Регистрация</h2>
-      <input
-        className="login__input"
-        name="email"
-        type="email"
-        placeholder="Email"
-        onChange={handleEmailChange}
-        autoComplete="off"
-        value={email}
-      />
-      <input
-        className="login__input"
-        name="password"
-        type="password"
-        placeholder="Пароль"
-        onChange={handlePasswordChange}
-        autoComplete="off"
-        value={password}
-      />
-      <button
-        className="login__button"
-        type="submit">Зарегистрироваться</button>
-      <div className="login__signin">
-        <Link to="/sign-in" className="login__signin-link link">
-          Уже зарегистрированы? Войти
-        </Link>
-      </div>
-    </form>
+    <>
+{/* <Header/> */}
+      <form
+        className="login__form"
+        name="register"
+        onSubmit={handleSubmit}
+        noValidate
+      >
+        <h2 className="login__title">Регистрация</h2>
+        <input
+          className="login__input"
+          name="email"
+          type="email"
+          placeholder="Email"
+          onChange={handleEmailChange}
+          autoComplete="off"
+          value={email}
+        />
+        <input
+          className="login__input"
+          name="password"
+          type="password"
+          placeholder="Пароль"
+          onChange={handlePasswordChange}
+          autoComplete="off"
+          value={password}
+        />
+        <button
+          className="login__button"
+          type="submit">Зарегистрироваться</button>
+        <div className="login__signin">
+          <Link to="/sign-in" className="login__signin-link">
+            Уже зарегистрированы? Войти
+          </Link>
+        </div>
+      </form>
+    </>
   )
 }

@@ -1,10 +1,15 @@
-export class AuthApi {
-	constructor(baseUrl, headers) {
+class AuthApi {
+	constructor(baseUrl) {
 		this._url = baseUrl;
-		this._headers = headers;
+		// this._headers = headers;
 	}
 
-	_isResOk = (res) => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`)
+	_isResOk(res) {
+		if (res.ok) {
+			return res.json();
+		}
+		return Promise.reject(`Статус ошибки: ${res.status}`);
+	}
 
 	_request(endpoint, options, url = this._url) {
 		return fetch(`${url}${endpoint}`, options)
@@ -12,39 +17,52 @@ export class AuthApi {
 	}
 
 	registerUser(email, password) {
+		// return fetch(`${this._url}/signup`, {
+		// 	method: 'POST',
+		// 	headers: {
+		// 	  "Content-Type": "application/json",
+		// 	},
+		// 	body: JSON.stringify({ email, password })
+		//   }).then((res) => this._isResOk(res));
+		// }
 		return this._request('/signup', {
 			method: "POST",
-			headers: this._headers,
+			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({
 				email,
 				password
 			})
 		})
 	}
+
 
 	loginUser(email, password) {
 		return this._request('/signin', {
 			method: "POST",
-			headers: this._headers,
+			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({
 				email,
 				password
 			})
 		})
+		// .then((data) => {
+		// 	if (data.jwt) {
+		// 		localStorage.setItem('jwt', data.jwt);
+		// 		return data;
+		// 	}
+		// })
 	}
+
 
 	checkToken(jwt) {
 		return this._request('/users/me', {
 			method: "GET",
-			headers: this._headers,
-			Authorization: `Bearer ${jwt}`,
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${jwt}`,
+			},
 		})
 	}
 }
 
-export const authApi = new AuthApi({
-  baseUrl: 'https://auth.nomoreparties.co',
-  headers: {
-    'Content-Type': 'application/json'
-  }
-});
+export const authApi = new AuthApi('https://auth.nomoreparties.co');
