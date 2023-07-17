@@ -28,15 +28,31 @@ function App() {
   const [cards, setCards] = useState([])
   const [isLoading, setIsLoading] = useState(false)
   const [deleteCard, setDeleteCard] = useState('')
-  const [userEmail, setUserEmail] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userEmail, setUserEmail] = useState('');
+  const [loggedIn, setLoggedIn] = useState(false);
   const [isInfoTooltipOpen, setIsInfoTooltipOpen] = useState(false);
   const [isInfoTolltipSuccess, setIsInfoTolltipSuccess] = useState(false);
   const navigate = useNavigate();
+  console.log(loggedIn)
 
   useEffect(() => {
-    checkJwt();
-  },)
+    setIsLoading(true)
+    if (loggedIn) {
+      Promise.all([api.getInfo(), api.getInitialCards()])
+        .then(([dataUser, dataCard]) => {
+          setCurrentUser(dataUser)
+          setCards(dataCard)
+          navigate('/', { replace: true })
+          setIsLoading(false)
+
+        })
+        .catch(err => console.log(err));
+    }
+  }, [loggedIn]);
+
+  useEffect(() => {
+    tokenCheck();
+  }, [])
 
   function handleEditAvatarClick() {
     setIsEditAvatarPopupOpen(true)
@@ -125,24 +141,13 @@ function App() {
       .catch(console.error);
   }
 
-  useEffect(() => {
-    setIsLoading(true)
-    Promise.all([api.getInfo(), api.getInitialCards()])
-      .then(([dataUser, dataCard]) => {
-        setCurrentUser(dataUser)
-        setCards(dataCard)
-        setIsLoading(false)
-      })
-      .catch(console.error);
-  }, [])
-
   function handleRegister(email, password) {
     authApi.registerUser(email, password)
       .then((res) => {
-        if (res) {
+        // if (res) {
           setIsInfoTolltipSuccess(true);
           navigate(`/sing-in`, { replace: true });
-        }
+        // }
       })
       .catch((err) => {
         setIsInfoTolltipSuccess(false);
@@ -154,12 +159,12 @@ function App() {
   function handleLogin(email, password) {
     authApi.loginUser(email, password)
       .then((data) => {
-        if (data.jwt) {
+        // if (data.token) {
           setUserEmail(email);
-          setIsLoggedIn(true);
-          localStorage.setItem("jwt", data.jwt);
+          setLoggedIn(true);
+          // localStorage.setItem("jwt", data.token);
           navigate('/', { replace: true });
-        }
+        // }
       })
       .catch((err) => {
         setIsInfoTolltipSuccess(false);
@@ -168,14 +173,14 @@ function App() {
       });
   }
 
-  function checkJwt() {
+  function tokenCheck() {
     const jwt = localStorage.getItem('jwt');
     if (jwt) {
-      api.checkToken(jwt)
+      authApi.checkToken(jwt)
         .then((res) => {
-          setIsLoggedIn(true);
-          userEmail(res.data.email);
-          navigate('/', {replace: true})
+          setLoggedIn(true);
+          setUserEmail(res.data.email);
+          navigate('/', { replace: true })
         })
         .catch(err => console.log(err));
     }
@@ -187,11 +192,12 @@ function App() {
   }
 
   return (
-    <CurrentUserContext.Provider value={currentUser}>
-      <>
+    <>
+      <CurrentUserContext.Provider value={currentUser}>
+
         <Header
           userEmail={userEmail}
-
+          onSignOut={signOut}
         />
 
         <Routes>
@@ -205,20 +211,17 @@ function App() {
             isLoading={isLoading}
             onCardLike={handleCardLike}
             onCardDelete={handleDeleteClick}
-            isLoggedIn={isLoggedIn} 
-            onSignOut={signOut}/>}
+            loggedIn={loggedIn}
+             />}
           />
 
           <Route path='/sign-up' element={<Register onRegister={handleRegister} />} />
 
           <Route path='/sign-in' element={<Login onLogin={handleLogin} />} />
 
-          <Route path='*' element={isLoggedIn ? <Navigate to="/" replace /> : <Navigate to="/sign-in" replace/>} />
-        
+          <Route path='*' element={loggedIn ? <Navigate to="/" replace /> : <Navigate to="/sign-in" replace />} />
 
         </Routes>
-
-
 
         <EditProfilePopup
           isOpen={isEditProfilePopupOpen}
@@ -259,8 +262,8 @@ function App() {
           isOpen={isInfoTooltipOpen}
           isSuccess={isInfoTolltipSuccess}
         />
-      </>
-    </CurrentUserContext.Provider>
+      </CurrentUserContext.Provider >
+    </>
   );
 }
 

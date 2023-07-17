@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Header } from "./Header/Header";
+// import { Header } from "./Header/Header";
 
 export function Register({ onRegister }) {
   const [email, setEmail] = useState("");
@@ -53,9 +53,11 @@ export function Register({ onRegister }) {
           className="login__button"
           type="submit">Зарегистрироваться</button>
         <div className="login__signin">
+          <p className="login__signin-text">Уже зарегистрированы?
           <Link to="/sign-in" className="login__signin-link">
-            Уже зарегистрированы? Войти
+             Войти
           </Link>
+          </p>
         </div>
       </form>
     </>

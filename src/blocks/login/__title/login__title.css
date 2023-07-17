@@ -5,5 +5,12 @@
   font-size: 24px;
   line-height: 29px;
   text-align: center;
-  min-width: 358px;
+  max-width: 358px;
+}
+
+@media screen and (max-width: 634px) {
+  .login__title {
+    width: 260px;
+    
+  }
 }

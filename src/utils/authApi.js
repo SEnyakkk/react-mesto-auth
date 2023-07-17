@@ -20,14 +20,14 @@ class AuthApi {
 		// return fetch(`${this._url}/signup`, {
 		// 	method: 'POST',
 		// 	headers: {
-		// 	  "Content-Type": "application/json",
+		// 	  'Content-Type': 'application/json',
 		// 	},
 		// 	body: JSON.stringify({ email, password })
 		//   }).then((res) => this._isResOk(res));
 		// }
 		return this._request('/signup', {
-			method: "POST",
-			headers: { "Content-Type": "application/json" },
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify({
 				email,
 				password
@@ -38,28 +38,28 @@ class AuthApi {
 
 	loginUser(email, password) {
 		return this._request('/signin', {
-			method: "POST",
-			headers: { "Content-Type": "application/json" },
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify({
 				email,
 				password
 			})
 		})
-		// .then((data) => {
-		// 	if (data.jwt) {
-		// 		localStorage.setItem('jwt', data.jwt);
-		// 		return data;
-		// 	}
-		// })
+			.then((data) => {
+				if (data.token) {
+					localStorage.setItem('jwt', data.token);
+					return data;
+				}
+			})
 	}
 
 
-	checkToken(jwt) {
+	checkToken(token) {
 		return this._request('/users/me', {
-			method: "GET",
+			method: 'GET',
 			headers: {
-				"Content-Type": "application/json",
-				Authorization: `Bearer ${jwt}`,
+				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${token}`,
 			},
 		})
 	}

@@ -1,0 +1,18 @@
+.login__signin-text {
+  margin: 0;
+  padding: 15px 0 0 0;
+  max-width: 100%;
+  font-size: 14px;
+  line-height: 17px;
+  font-weight: 400;
+  text-align: center;
+  color: #fff;
+  text-decoration: none;
+}
+
+@media screen and (max-width: 634px) {
+  .login__signin-text {
+    width: 260px;
+    padding: 20px 0 0 0;
+  }
+}

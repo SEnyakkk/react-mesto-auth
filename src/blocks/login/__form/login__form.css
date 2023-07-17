@@ -9,7 +9,7 @@
 
 @media screen and (max-width: 634px) {
   .login__form {
-    width: 270px;
-    margin: 40px;
+    width: 260px;
+    margin: 40px auto;
   }
 }
