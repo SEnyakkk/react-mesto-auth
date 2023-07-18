@@ -59,8 +59,8 @@ export class Api {
     })
   }
 
-  addlike(cardid) {
-    return this._request(`/cards/${cardid}/likes`, {
+  addLike(cardId) {
+    return this._request(`/cards/${cardId}/likes`, {
       method: 'PUT',
       headers: {
         authorization: this._authorization
@@ -68,8 +68,8 @@ export class Api {
     })
   }
 
-  removelike(cardid) {
-    return this._request(`/cards/${cardid}/likes`, {
+  removeLike(cardId) {
+    return this._request(`/cards/${cardId}/likes`, {
       method: 'DELETE',
       headers: {
         authorization: this._authorization
@@ -77,8 +77,8 @@ export class Api {
     })
   }
 
-  removeCard(cardid) {
-    return this._request(`/cards/${cardid}`, {
+  removeCard(cardId) {
+    return this._request(`/cards/${cardId}`, {
       method: 'DELETE',
       headers: {
         authorization: this._authorization

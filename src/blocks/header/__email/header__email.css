@@ -7,3 +7,12 @@
   text-align: right;
   color: #fff;
 }
+
+@media screen and (max-width: 634px) {
+  .header__email {
+    display: flex;
+    margin: 0;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+}

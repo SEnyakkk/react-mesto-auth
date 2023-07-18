@@ -4,7 +4,7 @@ import { Card } from "../Card/Card"
 import CurrentUserContext from "../../contexts/CurrentUserContext"
 import Spinner from "../Spinner/Spinner"
 import { Footer } from "../Footer/Footer"
-export function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick, onCardDelete, cards, isLoading, onCardLike }) {
+export function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick, onCardDelete, cards, isUserDataLoading, onCardLike }) {
   const currentUser = useContext(CurrentUserContext)
 
   return (
@@ -28,7 +28,7 @@ export function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick, onC
       <template className="place-template" />
       <section className="elements" aria-label="ваш фотоальбом">
         <ul className="elements__list">
-          {isLoading ? <Spinner /> : cards.map(data => {
+          {isUserDataLoading ? <Spinner /> : cards.map(data => {
             return (
               <li className="place" key={data._id}>
                 <Card
@@ -44,7 +44,7 @@ export function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick, onC
       </section>
 
     </main>
-    <Footer/>
+    
     </>
   )
 

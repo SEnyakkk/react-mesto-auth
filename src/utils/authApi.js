@@ -1,7 +1,6 @@
 class AuthApi {
 	constructor(baseUrl) {
 		this._url = baseUrl;
-		// this._headers = headers;
 	}
 
 	_isResOk(res) {
@@ -17,14 +16,6 @@ class AuthApi {
 	}
 
 	registerUser(email, password) {
-		// return fetch(`${this._url}/signup`, {
-		// 	method: 'POST',
-		// 	headers: {
-		// 	  'Content-Type': 'application/json',
-		// 	},
-		// 	body: JSON.stringify({ email, password })
-		//   }).then((res) => this._isResOk(res));
-		// }
 		return this._request('/signup', {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
@@ -54,7 +45,7 @@ class AuthApi {
 	}
 
 
-	checkToken(token) {
+	checkJwt(token) {
 		return this._request('/users/me', {
 			method: 'GET',
 			headers: {

@@ -2,3 +2,18 @@
   display: flex;
 
 }
+
+@media screen and (max-width: 934px) {
+  .header__container {
+    padding: 0 27px;
+  }
+} 
+
+@media screen and (max-width: 634px) {
+  .header__container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+
+  }
+} 
