@@ -5,7 +5,7 @@ export function DeletePopup({ card, onClose, isOpen, onDelete, }) {
 	function handleSubmit(evt) {
 		evt.preventDefault();
 		onDelete(card);
-		onClose();
+	
 	}
 
 	return (

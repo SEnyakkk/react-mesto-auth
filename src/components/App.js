@@ -79,6 +79,7 @@ function App() {
     api.removeCard(cardToDelete)
       .then(() => {
         setCards((cards) => cards.filter((c) => c._id !== cardToDelete))
+        closeAllPopups();
       })
       .catch(console.error);
   }
@@ -252,10 +253,7 @@ function App() {
         onClose={closeAllPopups}
         isOpen={isInfoTooltipOpen}
         isSuccess={isInfoTooltipSuccess}
-        massage={{ 
-          ok: 'Вы успешно зарегистрировались!', 
-          fail: 'Что-то пошло не так! Попробуйте еще раз' 
-        }}
+        massage={isInfoTooltipSuccess ? 'Вы успешно зарегистрировались!' : 'Что-то пошло не так! Попробуйте еще раз'}
       />
     </CurrentUserContext.Provider >
   );

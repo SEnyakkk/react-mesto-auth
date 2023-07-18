@@ -5,7 +5,7 @@ export function InfoTooltip({name, isOpen, isSuccess, onClose, massage}) {
         <div className={`popup__success ${isSuccess ? "popup__success_type_ok" : "popup__success_type_fail"}`}>
         </div>
         <h2 className="popup__title popup__title_type_success"> 
-          {isSuccess ? massage.ok : massage.fail}
+          {massage}
         </h2>
         <button className="popup__close-button" type="button" onClick={onClose}/>
       </div> 
