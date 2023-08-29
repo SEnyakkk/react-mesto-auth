@@ -38,7 +38,7 @@ function App() {
   useEffect(() => {
     if (loggedIn) {
       setIsUserDataLoading(true)
-      Promise.all([api.getInfo(), api.getInitialCards()])
+      Promise.all([api.getInfo(localStorage.jwt), api.getInitialCards(localStorage.jwt)])
         .then(([dataUser, dataCard]) => {
           setCurrentUser(dataUser)
           setCards(dataCard)
@@ -76,7 +76,7 @@ function App() {
   }
 
   function handleCardDelete(cardToDelete) {
-    api.removeCard(cardToDelete)
+    api.removeCard(cardToDelete, localStorage.jwt)
       .then(() => {
         setCards((cards) => cards.filter((c) => c._id !== cardToDelete))
         closeAllPopups();
@@ -85,15 +85,15 @@ function App() {
   }
 
   function handleCardLike(card) {
-    const isLiked = card.likes.some(i => i._id === currentUser._id);
+    const isLiked = card.likes.some(i => i === currentUser._id);
     if (!isLiked) {
-      api.addLike(card._id)
+      api.addLike(card._id, localStorage.jwt)
         .then((newCard) => {
           setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
         })
         .catch(console.error);
     } else {
-      api.removeLike(card._id)
+      api.removeLike(card._id, localStorage.jwt)
         .then((newCard) => {
           setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
         })
@@ -111,7 +111,7 @@ function App() {
   }
 
   function handleUpdateUser(data) {
-    api.setUserInfo(data)
+    api.setUserInfo(data, localStorage.jwt)
       .then((values) => {
         setCurrentUser(values);
         closeAllPopups();
@@ -120,7 +120,7 @@ function App() {
   }
 
   function handleUpdateAvatar(data) {
-    api.setAvatar(data)
+    api.setAvatar(data, localStorage.jwt)
       .then((values) => {
         setCurrentUser(values);
         closeAllPopups();
@@ -129,7 +129,7 @@ function App() {
   }
 
   function handleAddPlaceSubmit(data) {
-    api.addCard(data)
+    api.addCard(data, localStorage.jwt)
       .then((newCard) => {
         setCards([newCard, ...cards]);
         closeAllPopups();
@@ -170,7 +170,7 @@ function App() {
       authApi.checkJwt(jwt)
         .then((res) => {
           setLoggedIn(true);
-          setUserEmail(res.data.email);
+          setUserEmail(res.email);
           navigate('/', { replace: true })
         })
         .catch(err => console.log(err));

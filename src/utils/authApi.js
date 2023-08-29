@@ -56,4 +56,4 @@ class AuthApi {
 	}
 }
 
-export const authApi = new AuthApi('https://auth.nomoreparties.co');
+export const authApi = new AuthApi('http://localhost:3000');
